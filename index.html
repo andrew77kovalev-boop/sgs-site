@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simple Games Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#09060F;
+    --bg-soft:#0D0918;
+    --panel:#140E23;
+    --panel-2:#1A1230;
+    --line:#2A1D49;
+    --line-soft:#1F1636;
+    --text:#EDE7F9;
+    --text-dim:#A294C2;
+    --text-faint:#6C5D8C;
+    --accent:#9D6BFF;
+    --accent-2:#C9A3FF;
+    --accent-soft:#3B2870;
+    --accent-glow:rgba(157,107,255,0.20);
+    --magenta:#E86BC8;
+    --font-display:'Space Grotesk', sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+    --font-body:'Inter', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:var(--font-body); min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:
+      radial-gradient(ellipse 900px 520px at 12% -8%, var(--accent-glow), transparent 62%),
+      radial-gradient(ellipse 760px 520px at 100% 105%, rgba(232,107,200,0.08), transparent 62%);
+    animation: breathe 14s ease-in-out infinite;
+  }
+  @keyframes breathe{
+    0%,100%{ opacity:.85; }
+    50%{ opacity:1; }
+  }
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;}
+
+  .app{display:flex;min-height:100vh;position:relative;z-index:1;}
+
+  /* SIDEBAR */
+  .sidebar{
+    width:252px; flex-shrink:0; background:var(--bg-soft);
+    border-right:1px solid var(--line-soft);
+    display:flex; flex-direction:column; padding:22px 16px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:11px;
+    padding:6px 6px 22px 6px; border-bottom:1px solid var(--line-soft); margin-bottom:18px;
+  }
+  .brand-mark{
+    width:38px;height:38px;border-radius:9px;
+    background:linear-gradient(155deg,var(--accent),#5B2FAF);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-display);font-weight:700;font-size:17px;color:#0C0618;flex-shrink:0;
+    box-shadow:0 0 0 0 var(--accent-glow);
+    animation: markpulse 4.5s ease-in-out infinite;
+  }
+  @keyframes markpulse{
+    0%,100%{ box-shadow:0 0 0 0 rgba(157,107,255,0.35); }
+    50%{ box-shadow:0 0 22px 2px rgba(157,107,255,0.28); }
+  }
+  .brand-name{font-family:var(--font-display);font-weight:600;font-size:14.5px;line-height:1.25;}
+  .brand-tag{font-family:var(--font-mono);font-size:10px;color:var(--text-faint);letter-spacing:.06em;margin-top:2px;}
+
+  .nav-group-label{font-family:var(--font-mono);font-size:10.5px;color:var(--text-faint);letter-spacing:.08em;margin:16px 10px 8px;}
+  .nav-item{
+    position:relative; display:flex; align-items:center; gap:10px;
+    padding:9px 11px; border-radius:8px; font-size:13.5px; color:var(--text-dim);
+    cursor:pointer; margin-bottom:2px; border:1px solid transparent; overflow:hidden;
+    transition: background .18s ease, color .18s ease, border-color .18s ease, padding-left .18s ease;
+  }
+  .nav-item::before{
+    content:""; position:absolute; left:0; top:12%; height:76%; width:2px;
+    background:var(--accent); border-radius:2px;
+    transform:scaleY(0); transform-origin:center; transition:transform .22s ease;
+  }
+  .nav-item:hover{ background:var(--panel); color:var(--text); padding-left:14px; }
+  .nav-item.active{
+    background:linear-gradient(90deg,var(--accent-soft),transparent);
+    border-color:var(--line); color:var(--accent-2); padding-left:14px;
+  }
+  .nav-item.active::before{ transform:scaleY(1); }
+  .nav-icon{width:17px;text-align:center;font-size:14px;opacity:.9;}
+
+  .sidebar-footer{margin-top:auto;padding-top:16px;}
+  .support-btn{
+    width:100%;padding:11px;border-radius:9px;background:var(--panel);
+    border:1px solid var(--line);color:var(--magenta);font-size:13px;font-weight:500;
+    display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;
+    transition:border-color .18s, transform .12s, box-shadow .2s;
+  }
+  .support-btn:hover{ border-color:var(--magenta); box-shadow:0 0 18px rgba(232,107,200,.18); }
+  .support-btn:active{ transform:scale(.97); }
+
+  /* MAIN */
+  .main{flex:1;padding:30px 40px 60px;min-width:0;}
+  .topbar{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:26px;}
+  .page-title{font-family:var(--font-display);font-weight:700;font-size:32px;margin:0 0 6px;}
+  .page-sub{color:var(--text-dim);font-size:14px;margin:0;}
+  .top-actions{display:flex;gap:10px;}
+  .icon-btn{
+    width:38px;height:38px;border-radius:9px;background:var(--panel);border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;color:var(--text-dim);font-size:15px;cursor:pointer;
+    transition:color .18s, border-color .18s, transform .15s;
+  }
+  .icon-btn:hover{color:var(--text);border-color:var(--accent-soft);transform:translateY(-1px);}
+
+  .search{
+    display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);
+    border-radius:11px;padding:13px 16px;margin-bottom:26px;color:var(--text-faint);font-size:13.5px;
+    transition:border-color .2s, box-shadow .2s;
+  }
+  .search:hover{ border-color:var(--accent-soft); box-shadow:0 0 22px rgba(157,107,255,.08); }
+  .search:focus-within{ border-color:var(--accent); box-shadow:0 0 26px rgba(157,107,255,.14); }
+  .search-wrap{ position:relative; margin-bottom:26px; }
+  .search-wrap .search{ margin-bottom:0; }
+  .search-input{
+    flex:1; background:transparent; border:none; outline:none;
+    color:var(--text); font-family:var(--font-body); font-size:13.5px;
+  }
+  .search-input::placeholder{ color:var(--text-faint); }
+  .search-results{
+    display:none; position:absolute; left:0; right:0; top:calc(100% + 8px); z-index:15;
+    background:var(--panel-2); border:1px solid var(--line); border-radius:12px;
+    padding:6px; max-height:340px; overflow-y:auto;
+    box-shadow:0 18px 40px rgba(0,0,0,.5);
+    animation: rise .2s ease;
+  }
+  .search-results.open{ display:block; }
+  .result-item{
+    padding:10px 12px; border-radius:8px; cursor:pointer;
+    transition:background .15s;
+  }
+  .result-item:hover{ background:var(--panel); }
+  .result-title{ font-size:13.5px; }
+  .result-meta{ font-family:var(--font-mono); font-size:10px; color:var(--text-faint); margin-top:3px; }
+  .result-empty{ padding:14px 12px; font-size:13px; color:var(--text-faint); }
+
+  .sidebar-close{
+    display:none; margin-left:auto; width:30px; height:30px; flex-shrink:0;
+    background:var(--panel); border:1px solid var(--line); border-radius:8px;
+    color:var(--text-dim); font-size:14px; cursor:pointer; align-items:center; justify-content:center;
+  }
+  .sidebar-close:hover{ color:var(--text); border-color:var(--accent-soft); }
+  .overlay{
+    display:none; position:fixed; inset:0; z-index:15;
+    background:rgba(5,3,10,.55);
+    opacity:0; transition:opacity .2s ease;
+  }
+  .overlay.show{ display:block; opacity:1; }
+
+  /* HERO */
+  .hero-row{display:grid;grid-template-columns:1.7fr 1fr;gap:16px;margin-bottom:16px;}
+  .hero{
+    background:linear-gradient(135deg,#1C1233,#0F0A1C 62%);
+    border:1px solid var(--line);border-radius:16px;padding:34px;position:relative;overflow:hidden;
+  }
+  .hero::after{
+    content:"";position:absolute;right:-70px;top:-70px;width:240px;height:240px;border-radius:50%;
+    background:radial-gradient(circle,var(--accent-glow),transparent 70%);
+    animation: orbit 18s ease-in-out infinite alternate;
+  }
+  @keyframes orbit{
+    from{ transform:translate(0,0) scale(1); }
+    to{ transform:translate(-30px,26px) scale(1.15); }
+  }
+  .hero h1{font-family:var(--font-display);font-weight:700;font-size:30px;line-height:1.2;margin:0 0 12px;max-width:430px;position:relative;}
+  .hero h1 span{color:var(--accent-2);}
+  .hero p{color:var(--text-dim);font-size:14px;line-height:1.55;max-width:440px;margin:0 0 22px;position:relative;}
+  .hero-actions{display:flex;gap:10px;position:relative;flex-wrap:wrap;}
+  .btn-primary{
+    padding:11px 18px;border-radius:9px;border:none;
+    background:linear-gradient(135deg,var(--accent),#6A34C8);
+    color:#0C0618;font-weight:600;font-size:13.5px;cursor:pointer;
+    transition:transform .14s ease, box-shadow .2s ease, filter .2s;
+  }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 8px 24px rgba(157,107,255,.3); filter:brightness(1.06); }
+  .btn-primary:active{ transform:translateY(0) scale(.98); }
+  .btn-secondary{
+    padding:11px 18px;border-radius:9px;background:transparent;border:1px solid var(--line);
+    color:var(--text);font-weight:500;font-size:13.5px;cursor:pointer;
+    transition:border-color .18s, background .18s, transform .14s;
+  }
+  .btn-secondary:hover{border-color:var(--accent);background:rgba(157,107,255,.07);transform:translateY(-2px);}
+  .btn-secondary:active{transform:translateY(0) scale(.98);}
+
+  .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .stat-card{
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;
+    position:relative;overflow:hidden;transition:border-color .2s, transform .2s;
+  }
+  .stat-card:hover{ border-color:var(--accent-soft); transform:translateY(-2px); }
+  .stat-icon{font-size:18px;margin-bottom:16px;opacity:.9;}
+  .stat-num{font-family:var(--font-display);font-weight:700;font-size:26px;}
+  .stat-label{font-family:var(--font-mono);font-size:10px;color:var(--text-faint);letter-spacing:.06em;margin-top:2px;}
+
+  .latest-card{
+    background:linear-gradient(120deg,#20143A,#100A1E 65%);
+    border:1px solid var(--accent-soft);border-radius:16px;padding:26px 28px;
+    display:flex;align-items:center;gap:22px;margin-bottom:30px;position:relative;overflow:hidden;
+  }
+  .latest-card::after{
+    content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;
+    background:linear-gradient(100deg,transparent,rgba(201,163,255,.09),transparent);
+    animation: sweep 6s ease-in-out infinite;
+  }
+  @keyframes sweep{
+    0%{ left:-60%; }
+    55%,100%{ left:130%; }
+  }
+  .latest-icon{
+    width:56px;height:56px;border-radius:14px;flex-shrink:0;
+    background:linear-gradient(155deg,var(--accent),#57279F);
+    display:flex;align-items:center;justify-content:center;font-size:24px;
+  }
+  .latest-badge{
+    display:inline-block;font-family:var(--font-mono);font-size:10.5px;color:var(--accent-2);
+    background:rgba(157,107,255,.12);border:1px solid var(--accent-soft);
+    padding:3px 9px;border-radius:20px;margin-bottom:8px;letter-spacing:.04em;
+  }
+  .latest-title{font-family:var(--font-display);font-weight:600;font-size:19px;margin:0 0 6px;}
+  .latest-title b{color:var(--accent-2);font-weight:600;}
+  .latest-desc{color:var(--text-dim);font-size:13.5px;margin:0;}
+  .latest-cta{margin-left:auto;flex-shrink:0;position:relative;}
+
+  .section-label{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:600;font-size:17px;margin:0 0 16px;}
+  .section-label .bar{width:3px;height:16px;background:var(--accent);border-radius:2px;}
+
+  .project-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .project-card{
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;cursor:pointer;
+    transition:border-color .2s, transform .2s, box-shadow .25s;
+  }
+  .project-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 10px 30px rgba(157,107,255,.12);}
+  .project-top{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+  .project-emoji{font-size:22px;}
+  .project-name{font-family:var(--font-display);font-weight:600;font-size:15px;}
+  .project-stack{font-family:var(--font-mono);font-size:10px;color:var(--text-faint);margin-top:2px;}
+  .project-desc{font-size:13px;color:var(--text-dim);line-height:1.5;margin:0 0 14px;}
+  .project-meta{display:flex;align-items:center;justify-content:space-between;}
+  .pill{font-family:var(--font-mono);font-size:10px;padding:3px 9px;border-radius:20px;border:1px solid var(--line);}
+  .pill.active{color:var(--accent-2);border-color:var(--accent-soft);background:rgba(157,107,255,.08);}
+  .pill.early{color:var(--magenta);border-color:#4A2440;background:rgba(232,107,200,.08);}
+
+  /* VIEWS + stagger */
+  .view{display:none;}
+  .view.active{display:block;}
+  .view.active .anim{ animation: rise .45s cubic-bezier(.2,.7,.3,1) backwards; }
+  @keyframes rise{ from{opacity:0;transform:translateY(14px);} to{opacity:1;transform:none;} }
+
+  /* UPDATES */
+  .update-item{
+    background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:18px 20px;margin-bottom:12px;
+    display:flex;gap:18px;align-items:flex-start;transition:border-color .2s, transform .2s;
+  }
+  .update-item:hover{border-color:var(--accent-soft);transform:translateX(3px);}
+  .update-date{
+    width:56px;flex-shrink:0;text-align:center;background:var(--panel-2);
+    border:1px solid var(--line);border-radius:10px;padding:8px 0;
+  }
+  .update-date .d{font-family:var(--font-display);font-weight:700;font-size:18px;line-height:1;}
+  .update-date .m{font-family:var(--font-mono);font-size:9px;color:var(--text-faint);letter-spacing:.06em;margin-top:3px;}
+  .update-body{flex:1;}
+  .update-tag{
+    display:inline-block;font-family:var(--font-mono);font-size:10px;padding:2px 8px;border-radius:20px;
+    border:1px solid var(--line);color:var(--text-dim);margin-bottom:8px;
+  }
+  .update-title{font-family:var(--font-display);font-weight:600;font-size:15px;margin:0 0 5px;}
+  .update-desc{color:var(--text-dim);font-size:13px;margin:0;line-height:1.5;}
+  .update-icon{font-size:20px;flex-shrink:0;opacity:.85;}
+
+  /* DETAIL */
+  .detail-header{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:22px;}
+  .detail-status{font-size:13px;color:var(--text-dim);border-top:1px solid var(--line-soft);margin-top:14px;padding-top:14px;line-height:1.5;}
+  .detail-status b{color:var(--text);}
+  .version-row{
+    background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin-bottom:10px;
+    display:flex;align-items:center;gap:18px;transition:border-color .2s, transform .2s;
+  }
+  .version-row:hover{border-color:var(--accent-soft);transform:translateX(3px);}
+  .version-row.top{border-color:var(--accent-soft);background:linear-gradient(100deg,#1B1233,var(--panel) 60%);}
+  .v-tag{font-family:var(--font-display);font-weight:700;font-size:15px;width:56px;flex-shrink:0;color:var(--accent-2);}
+  .v-desc{flex:1;font-size:13.5px;color:var(--text-dim);}
+  .v-date{font-family:var(--font-mono);font-size:10.5px;color:var(--text-faint);flex-shrink:0;}
+  .v-badge{
+    font-family:var(--font-mono);font-size:9.5px;color:var(--accent-2);background:rgba(157,107,255,.1);
+    border:1px solid var(--accent-soft);padding:2px 8px;border-radius:20px;flex-shrink:0;margin-left:6px;
+  }
+
+  .btn-download{
+    flex-shrink:0; padding:7px 14px; border-radius:8px; border:none;
+    background:linear-gradient(135deg,var(--accent),#6A34C8);
+    color:#0C0618; font-weight:600; font-size:12px; cursor:pointer;
+    transition:transform .14s ease, box-shadow .2s ease, filter .2s;
+  }
+  .btn-download:hover{ transform:translateY(-2px); box-shadow:0 6px 18px rgba(157,107,255,.3); filter:brightness(1.06); }
+  .btn-download:active{ transform:translateY(0) scale(.97); }
+
+  .about-text{font-size:14px;color:var(--text-dim);line-height:1.7;max-width:640px;}
+  .about-text p{margin:0 0 14px;}
+  .contact-row{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;}
+
+  ::-webkit-scrollbar{width:9px;}
+  ::-webkit-scrollbar-thumb{background:var(--line);border-radius:10px;}
+  ::-webkit-scrollbar-thumb:hover{background:var(--accent-soft);}
+
+  :focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  @media (max-width:860px){
+    .sidebar{position:fixed;z-index:20;height:100vh;transform:translateX(-100%);transition:transform .25s cubic-bezier(.2,.7,.3,1);}
+    .sidebar.open{transform:translateX(0);}
+    .main{padding:20px 16px 50px;}
+    .hero-row{grid-template-columns:1fr;}
+    .project-grid{grid-template-columns:1fr;}
+    .mobile-menu-btn{display:flex !important;}
+    .sidebar-close{display:flex;}
+    .latest-card{flex-wrap:wrap;}
+    .latest-cta{margin-left:0;}
+    .page-title{font-size:26px;}
+  }
+  .mobile-menu-btn{display:none;}
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{ animation:none !important; transition:none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="overlay" id="overlay"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-mark">S</div>
+      <div>
+        <div class="brand-name">Simple Games<br>Studio</div>
+        <div class="brand-tag">SGS · инди-разработка</div>
+      </div>
+      <button class="sidebar-close" id="sidebarClose" aria-label="Закрыть меню">✕</button>
+    </div>
+
+    <div class="nav-group-label">НАВИГАЦИЯ</div>
+    <div class="nav-item active" data-view="home"><span class="nav-icon">⌂</span>Главная</div>
+    <div class="nav-item" data-view="updates"><span class="nav-icon">◷</span>Обновления</div>
+    <div class="nav-item" data-view="about"><span class="nav-icon">✦</span>О нас</div>
+
+    <div class="nav-group-label">ПРОЕКТЫ</div>
+    <div class="nav-item" data-view="platformer"><span class="nav-icon">▦</span>2D Платформер</div>
+    <div class="nav-item" data-view="subway"><span class="nav-icon">▶</span>Subway-пародия</div>
+
+    <div class="sidebar-footer">
+      <button class="support-btn">♥ Поддержать проект</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <button class="mobile-menu-btn icon-btn" id="menuBtn" style="margin-bottom:14px;">☰</button>
+
+    <!-- HOME -->
+    <div class="view active" id="view-home">
+      <div class="topbar anim">
+        <div>
+          <h1 class="page-title">Главная</h1>
+          <p class="page-sub">Simple Games Studio — игры, которые делаю один</p>
+        </div>
+        <div class="top-actions">
+          <div class="icon-btn">⌕</div>
+          <div class="icon-btn">◔</div>
+        </div>
+      </div>
+
+      <div class="search-wrap anim">
+        <div class="search">⌕ <input type="text" class="search-input" placeholder="Поиск проектов, версий, обновлений..."></div>
+        <div class="search-results"></div>
+      </div>
+
+      <div class="hero-row">
+        <div class="hero anim">
+          <h1>Один разработчик.<br><span>Настоящие</span> игры.</h1>
+          <p>Два активных проекта, своя студия и полный контроль над каждой деталью — от физики прыжка до релизного чейнджлога.</p>
+          <div class="hero-actions">
+            <button class="btn-primary" onclick="showView('platformer')">Открыть платформер</button>
+            <button class="btn-secondary" onclick="showView('updates')">Смотреть обновления</button>
+          </div>
+        </div>
+        <div class="stat-grid">
+          <div class="stat-card anim"><div class="stat-icon">▦</div><div class="stat-num" data-count="2">0</div><div class="stat-label">ПРОЕКТА В РАБОТЕ</div></div>
+          <div class="stat-card anim"><div class="stat-icon">◷</div><div class="stat-num" data-count="9">0</div><div class="stat-label">ВЕРСИЙ ВЫПУЩЕНО</div></div>
+          <div class="stat-card anim"><div class="stat-icon">◆</div><div class="stat-num" data-count="1">0</div><div class="stat-label">СТУДИЯ</div></div>
+          <div class="stat-card anim"><div class="stat-num" style="margin-top:34px;">2026</div><div class="stat-label">ГОД</div></div>
+        </div>
+      </div>
+
+      <div class="latest-card anim">
+        <div class="latest-icon">▶</div>
+        <div>
+          <span class="latest-badge">ПОСЛЕДНЕЕ ОБНОВЛЕНИЕ</span>
+          <div class="latest-title">Subway-пародия <b>v0.1</b></div>
+          <p class="latest-desc">Собран первый прототип раннера в Unity: базовый бег и уклонение. Пока грубо, но играется.</p>
+        </div>
+        <div class="latest-cta"><button class="btn-primary" onclick="showView('subway')">Открыть проект</button></div>
+      </div>
+
+      <div class="section-label anim"><span class="bar"></span>Мои проекты</div>
+      <div class="project-grid">
+        <div class="project-card anim" onclick="showView('platformer')">
+          <div class="project-top">
+            <div class="project-emoji">▦</div>
+            <div>
+              <div class="project-name">2D Платформер</div>
+              <div class="project-stack">PYTHON / PYGAME · C#</div>
+            </div>
+          </div>
+          <p class="project-desc">Свой движок на pygame и генератор уровней на C#, который проверяет каждый прыжок на физическую допрыгиваемость.</p>
+          <div class="project-meta"><span class="pill active">в активной разработке</span><span style="font-family:var(--font-mono);font-size:11px;color:var(--text-faint);">v0.8</span></div>
+        </div>
+        <div class="project-card anim" onclick="showView('subway')">
+          <div class="project-top">
+            <div class="project-emoji">▶</div>
+            <div>
+              <div class="project-name">Subway-пародия</div>
+              <div class="project-stack">UNITY · C#</div>
+            </div>
+          </div>
+          <p class="project-desc">Пародия на раннер в духе Subway Surfers на Unity — раннее прототипирование механик бега и уклонения.</p>
+          <div class="project-meta"><span class="pill early">ранняя стадия</span><span style="font-family:var(--font-mono);font-size:11px;color:var(--text-faint);">v0.1</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- UPDATES -->
+    <div class="view" id="view-updates">
+      <div class="topbar anim">
+        <div>
+          <h1 class="page-title">Обновления</h1>
+          <p class="page-sub">Полная лента релизов по всем проектам</p>
+        </div>
+      </div>
+      <div class="search-wrap anim">
+        <div class="search">⌕ <input type="text" class="search-input" placeholder="Поиск по обновлениям..."></div>
+        <div class="search-results"></div>
+      </div>
+      <div class="section-label anim"><span class="bar"></span>Лента</div>
+
+      <div class="update-item anim">
+        <div class="update-date"><div class="d">15</div><div class="m">СЕН 26</div></div>
+        <div class="update-icon">▶</div>
+        <div class="update-body">
+          <span class="update-tag">Subway-пародия v0.1</span>
+          <div class="update-title">Первый прототип в Unity</div>
+          <p class="update-desc">Пародийный раннер запущен: базовый бег и уклонение. Черновая версия, полировка впереди.</p>
+        </div>
+      </div>
+
+      <div class="update-item anim">
+        <div class="update-date"><div class="d">24</div><div class="m">АВГ 26</div></div>
+        <div class="update-icon">▦</div>
+        <div class="update-body">
+          <span class="update-tag">2D Платформер v0.8</span>
+          <div class="update-title">Камера в стиле Mario</div>
+          <p class="update-desc">Первый полноценный режим геймплея со скроллящейся камерой. Дальше — вертикальный подъём и одноэкранные уровни.</p>
+        </div>
+      </div>
+
+      <div class="update-item anim">
+        <div class="update-date"><div class="d">18</div><div class="m">АВГ 26</div></div>
+        <div class="update-icon">▦</div>
+        <div class="update-body">
+          <span class="update-tag">2D Платформер v0.7</span>
+          <div class="update-title">Исправлена детекция земли</div>
+          <p class="update-desc">Определение "стою ли я на земле" починено через 3-пиксельный probe rect. Формат уровней зафиксирован.</p>
+        </div>
+      </div>
+
+      <div class="update-item anim">
+        <div class="update-date"><div class="d">10</div><div class="m">АВГ 26</div></div>
+        <div class="update-icon">▦</div>
+        <div class="update-body">
+          <span class="update-tag">2D Платформер v0.6</span>
+          <div class="update-title">Генератор уровней на C#</div>
+          <p class="update-desc">Именованные паттерны (Лестница, Зигзаг, Холм, Башенка) и проверка допрыгиваемости по кинематике прыжка.</p>
+        </div>
+      </div>
+
+      <div class="update-item anim">
+        <div class="update-date"><div class="d">02</div><div class="m">АВГ 26</div></div>
+        <div class="update-icon">▦</div>
+        <div class="update-body">
+          <span class="update-tag">2D Платформер v0.5</span>
+          <div class="update-title">Меню и настройки</div>
+          <p class="update-desc">Главное меню на pygame и экран настроек: полноэкранный режим и масштаб интерфейса.</p>
+        </div>
+      </div>
+
+      <div class="update-item anim">
+        <div class="update-date"><div class="d">26</div><div class="m">ИЮЛ 26</div></div>
+        <div class="update-icon">▦</div>
+        <div class="update-body">
+          <span class="update-tag">2D Платформер v0.4</span>
+          <div class="update-title">Двойная сетка визуализации</div>
+          <p class="update-desc">Сетки 64×64 и 128×64 с переключением по клавишам F и Q.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABOUT -->
+    <div class="view" id="view-about">
+      <div class="topbar anim">
+        <div>
+          <h1 class="page-title">О нас</h1>
+          <p class="page-sub">Кто делает Simple Games Studio</p>
+        </div>
+      </div>
+      <div class="detail-header anim">
+        <div class="about-text">
+          <p>Simple Games Studio — соло-студия одного разработчика. Дизайн игровой логики и архитектуры — сам, реализация — сам, с ИИ-инструментами как второй парой рук на этапе кода.</p>
+          <p>Сейчас в работе два проекта: 2D-платформер на Python/pygame с генератором уровней на C#, и ранний прототип раннера в духе Subway Surfers на Unity.</p>
+          <p>Студия открыта для сотрудничества и обратной связи — если хочешь предложить идею или помочь с проектом, пиши.</p>
+        </div>
+        <div class="contact-row">
+          <button class="btn-primary">Написать</button>
+          <button class="btn-secondary" onclick="showView('updates')">Смотреть обновления</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLATFORMER -->
+    <div class="view" id="view-platformer">
+      <div class="topbar anim">
+        <div>
+          <h1 class="page-title">2D Платформер</h1>
+          <p class="page-sub">Свой движок на Python/pygame + генератор уровней на C#</p>
+        </div>
+      </div>
+      <div class="detail-header anim">
+        <div class="update-tag" style="margin-bottom:10px;">▦ 2D ПЛАТФОРМЕР</div>
+        <div style="font-size:14px;color:var(--text-dim);line-height:1.6;">
+          Pygame отвечает за рендер и ввод, C# генерирует уровни в текстовый формат по сетке 64×64 / 128×64.
+          Каждый уровень проверяется на физическую допрыгиваемость до сборки.
+        </div>
+        <div class="detail-status">Статус: <b>в активной разработке</b> — в работе входной файл, который сначала запускает генерацию на C#, потом сам pygame.</div>
+      </div>
+
+      <div class="section-label anim"><span class="bar"></span>История версий</div>
+
+      <div class="version-row top anim">
+        <div class="v-tag">v0.8</div>
+        <div class="v-desc">Mario-style скроллящаяся камера — первый полноценный режим геймплея</div>
+        <span class="v-badge">ТЕКУЩАЯ</span>
+        <div class="v-date">24 АВГ 2026</div>
+      </div>
+      <div class="version-row anim">
+        <div class="v-tag">v0.7</div>
+        <div class="v-desc">Исправлена детекция земли (3px probe rect), формат уровней зафиксирован</div>
+        <div class="v-date">18 АВГ 2026</div>
+      </div>
+      <div class="version-row anim">
+        <div class="v-tag">v0.6</div>
+        <div class="v-desc">Генератор уровней на C#: именованные паттерны + проверка допрыгиваемости</div>
+        <div class="v-date">10 АВГ 2026</div>
+      </div>
+      <div class="version-row anim">
+        <div class="v-tag">v0.5</div>
+        <div class="v-desc">Главное меню в pygame и экран настроек с масштабом интерфейса</div>
+        <div class="v-date">02 АВГ 2026</div>
+      </div>
+      <div class="version-row anim">
+        <div class="v-tag">v0.4</div>
+        <div class="v-desc">Двойная сетка визуализации уровня с переключением по F/Q</div>
+        <div class="v-date">26 ИЮЛ 2026</div>
+      </div>
+      <div class="version-row anim">
+        <div class="v-tag">v0.3</div>
+        <div class="v-desc">Коллизия разделена по осям X и Y</div>
+        <div class="v-date">19 ИЮЛ 2026</div>
+      </div>
+      <div class="version-row anim">
+        <div class="v-tag">v0.2</div>
+        <div class="v-desc">Гравитация и прыжок на основе dt</div>
+        <div class="v-date">12 ИЮЛ 2026</div>
+      </div>
+      <div class="version-row anim">
+        <div class="v-tag">v0.1</div>
+        <div class="v-desc">Первый полноэкранный скелет на pygame</div>
+        <div class="v-date">05 ИЮЛ 2026</div>
+        <a href="https://github.com/andrew77kovalev-boop/Platformer-v0.1-game/releases/download/v0.1/v0.1.zip"><button class="btn-download">Скачать</button></a>
+      </div>
+    </div>
+
+    <!-- SUBWAY -->
+    <div class="view" id="view-subway">
+      <div class="topbar anim">
+        <div>
+          <h1 class="page-title">Subway-пародия</h1>
+          <p class="page-sub">Раннер в духе Subway Surfers на Unity</p>
+        </div>
+      </div>
+      <div class="detail-header anim">
+        <div class="update-tag" style="margin-bottom:10px;">▶ SUBWAY-ПАРОДИЯ</div>
+        <div style="font-size:14px;color:var(--text-dim);line-height:1.6;">
+          Пародийный раннер в Unity. Пока ранний и грубый прототип — основа механик бега и уклонения от препятствий.
+        </div>
+        <div class="detail-status">Статус: <b>ранняя стадия</b> — базовая механика есть, полировки и контента мало.</div>
+      </div>
+
+      <div class="section-label anim"><span class="bar"></span>История версий</div>
+
+      <div class="version-row top anim">
+        <div class="v-tag">v0.1</div>
+        <div class="v-desc">Первый черновой прототип — бег и уклонение от препятствий</div>
+        <span class="v-badge">ТЕКУЩАЯ</span>
+        <div class="v-date">15 СЕН 2026</div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  function animateStagger(view){
+    const items = view.querySelectorAll('.anim');
+    items.forEach((el, i) => {
+      el.style.animation = 'none';
+      void el.offsetWidth;
+      el.style.animation = '';
+      el.style.animationDelay = (i * 55) + 'ms';
+    });
+  }
+
+  function countUp(view){
+    view.querySelectorAll('[data-count]').forEach(el => {
+      const target = parseInt(el.dataset.count, 10);
+      let cur = 0;
+      const step = () => {
+        cur++;
+        el.textContent = cur;
+        if(cur < target) setTimeout(step, 450 / target);
+      };
+      el.textContent = '0';
+      setTimeout(step, 250);
+    });
+  }
+
+  function showView(name){
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    const view = document.getElementById('view-' + name);
+    view.classList.add('active');
+    animateStagger(view);
+    if(name === 'home') countUp(view);
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    const navEl = document.querySelector('.nav-item[data-view="' + name + '"]');
+    if(navEl) navEl.classList.add('active');
+    document.getElementById('sidebar').classList.remove('open');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', () => showView(item.dataset.view));
+  });
+  // --- боковое меню ---
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+
+  function openMenu(){ sidebar.classList.add('open'); overlay.classList.add('show'); }
+  function closeMenu(){ sidebar.classList.remove('open'); overlay.classList.remove('show'); }
+
+  document.getElementById('menuBtn').addEventListener('click', openMenu);
+  document.getElementById('sidebarClose').addEventListener('click', closeMenu);
+  overlay.addEventListener('click', closeMenu);
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape'){ closeMenu(); closeSearch(); }
+  });
+
+  // --- поиск ---
+  const index = [];
+
+  document.querySelectorAll('.nav-item').forEach(n => {
+    index.push({ title: n.textContent.trim(), meta: 'Страница', view: n.dataset.view });
+  });
+
+  document.querySelectorAll('.view').forEach(view => {
+    const viewName = view.id.replace('view-', '');
+    view.querySelectorAll('.update-item').forEach(u => {
+      index.push({
+        title: u.querySelector('.update-title').textContent,
+        meta: u.querySelector('.update-tag').textContent + ' · ' + u.querySelector('.update-date').textContent.trim().replace(/\s+/g, ' '),
+        extra: u.querySelector('.update-desc').textContent,
+        view: viewName
+      });
+    });
+    view.querySelectorAll('.version-row').forEach(v => {
+      index.push({
+        title: v.querySelector('.v-tag').textContent + ' — ' + v.querySelector('.v-desc').textContent,
+        meta: view.querySelector('.page-title').textContent + ' · ' + v.querySelector('.v-date').textContent,
+        view: viewName
+      });
+    });
+  });
+
+  function closeSearch(){
+    document.querySelectorAll('.search-results').forEach(r => r.classList.remove('open'));
+  }
+
+  function renderResults(box, query){
+    const q = query.trim().toLowerCase();
+    if(!q){ box.classList.remove('open'); return; }
+
+    const hits = index.filter(item =>
+      (item.title + ' ' + item.meta + ' ' + (item.extra || '')).toLowerCase().includes(q)
+    ).slice(0, 8);
+
+    if(hits.length === 0){
+      box.innerHTML = '<div class="result-empty">Ничего не нашлось по запросу «' + query + '»</div>';
+    } else {
+      box.innerHTML = hits.map((h, i) =>
+        '<div class="result-item" data-i="' + i + '">' +
+          '<div class="result-title">' + h.title + '</div>' +
+          '<div class="result-meta">' + h.meta + '</div>' +
+        '</div>'
+      ).join('');
+      box.querySelectorAll('.result-item').forEach(el => {
+        el.addEventListener('click', () => {
+          showView(hits[el.dataset.i].view);
+          closeSearch();
+          document.querySelectorAll('.search-input').forEach(inp => inp.value = '');
+        });
+      });
+    }
+    box.classList.add('open');
+  }
+
+  document.querySelectorAll('.search-input').forEach(input => {
+    const box = input.closest('.search-wrap').querySelector('.search-results');
+    input.addEventListener('input', () => renderResults(box, input.value));
+    input.addEventListener('focus', () => renderResults(box, input.value));
+  });
+
+  document.addEventListener('click', e => {
+    if(!e.target.closest('.search-wrap')) closeSearch();
+  });
+
+  const home = document.getElementById('view-home');
+  animateStagger(home);
+  countUp(home);
+</script>
+</body>
+</html>
