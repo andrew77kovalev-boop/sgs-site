@@ -309,6 +309,9 @@
   .btn-download:hover{ transform:translateY(-2px); box-shadow:0 6px 18px rgba(157,107,255,.3); filter:brightness(1.06); }
   .btn-download:active{ transform:translateY(0) scale(.97); }
 
+  /* игра прямо на странице */
+  .game-frame{display:block;width:100%;height:600px;border:1px solid var(--line);border-radius:14px;background:#000;}
+
   .about-text{font-size:14px;color:var(--text-dim);line-height:1.7;max-width:640px;}
   .about-text p{margin:0 0 14px;}
   .contact-row{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;}
@@ -360,6 +363,7 @@
     <div class="nav-group-label">ПРОЕКТЫ</div>
     <div class="nav-item" data-view="platformer"><span class="nav-icon">▦</span>2D Платформер</div>
     <div class="nav-item" data-view="subway"><span class="nav-icon">▶</span>Subway-пародия</div>
+    <div class="nav-item" data-view="industrialist"><span class="nav-icon">⚙</span>Industrialist</div>
 
     <div class="sidebar-footer">
       <button class="support-btn">♥ Поддержать проект</button>
@@ -624,6 +628,28 @@
         <span class="v-badge">ТЕКУЩАЯ</span>
         <div class="v-date">15 СЕН 2026</div>
       </div>
+    </div>
+
+    <!-- INDUSTRIALIST -->
+    <div class="view" id="view-industrialist">
+      <div class="topbar anim">
+        <div>
+          <h1 class="page-title">Industrialist в браузере</h1>
+          <p class="page-sub">3D-игра про строительство заводов, играется прямо в браузере</p>
+        </div>
+      </div>
+      <div class="detail-header anim">
+        <div class="update-tag" style="margin-bottom:10px;">⚙ INDUSTRIALIST</div>
+        <div style="font-size:14px;color:var(--text-dim);line-height:1.6;">
+          Ставь экстракторы, тяни трубы, плавь руду в печах и продавай слитки. Игра растёт с каждым видео на YouTube.
+        </div>
+        <div class="detail-status">Статус: <b>в активной разработке</b> — готовы трубы, печи, разветвители, объединители и склад.</div>
+        <div class="contact-row">
+          <a href="https://andrew77kovalev-boop.github.io/Industrialist-in-browser/" target="_blank"><button class="btn-primary">Играть на весь экран</button></a>
+          <a href="https://forms.gle/toXUwobfJArfALHn9" target="_blank"><button class="btn-secondary">Оставить отзыв</button></a>
+        </div>
+      </div>
+      <iframe class="game-frame anim" src="https://andrew77kovalev-boop.github.io/Industrialist-in-browser/" title="Industrialist в браузере"></iframe>
     </div>
 
   </main>
