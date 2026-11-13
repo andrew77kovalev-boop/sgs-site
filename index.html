@@ -364,10 +364,6 @@
     <div class="nav-item" data-view="platformer"><span class="nav-icon">▦</span>2D Платформер</div>
     <div class="nav-item" data-view="subway"><span class="nav-icon">▶</span>Subway-пародия</div>
     <div class="nav-item" data-view="industrialist"><span class="nav-icon">⚙</span>Industrialist</div>
-
-    <div class="sidebar-footer">
-      <button class="support-btn">♥ Поддержать проект</button>
-    </div>
   </aside>
 
   <main class="main">
@@ -380,10 +376,6 @@
           <h1 class="page-title">Главная</h1>
           <p class="page-sub">Simple Games Studio — игры, которые делаю один</p>
         </div>
-        <div class="top-actions">
-          <div class="icon-btn">⌕</div>
-          <div class="icon-btn">◔</div>
-        </div>
       </div>
 
       <div class="search-wrap anim">
@@ -394,16 +386,16 @@
       <div class="hero-row">
         <div class="hero anim">
           <h1>Один разработчик.<br><span>Настоящие</span> игры.</h1>
-          <p>Два активных проекта, своя студия и полный контроль над каждой деталью — от физики прыжка до релизного чейнджлога.</p>
+          <p>Три активных проекта, своя студия и полный контроль над каждой деталью — от физики прыжка до релизного чейнджлога.</p>
           <div class="hero-actions">
             <button class="btn-primary" onclick="showView('platformer')">Открыть платформер</button>
             <button class="btn-secondary" onclick="showView('updates')">Смотреть обновления</button>
           </div>
         </div>
         <div class="stat-grid">
-          <div class="stat-card anim"><div class="stat-icon">▦</div><div class="stat-num" data-count="2">0</div><div class="stat-label">ПРОЕКТА В РАБОТЕ</div></div>
-          <div class="stat-card anim"><div class="stat-icon">◷</div><div class="stat-num" data-count="9">0</div><div class="stat-label">ВЕРСИЙ ВЫПУЩЕНО</div></div>
-          <div class="stat-card anim"><div class="stat-icon">◆</div><div class="stat-num" data-count="1">0</div><div class="stat-label">СТУДИЯ</div></div>
+          <div class="stat-card anim"><div class="stat-icon">▦</div><div class="stat-num">3</div><div class="stat-label">ПРОЕКТА В РАБОТЕ</div></div>
+          <div class="stat-card anim"><div class="stat-icon">◷</div><div class="stat-num">2</div><div class="stat-label">ВЕРСИИ ВЫПУЩЕНО</div></div>
+          <div class="stat-card anim"><div class="stat-icon">◆</div><div class="stat-num">1</div><div class="stat-label">СТУДИЯ</div></div>
           <div class="stat-card anim"><div class="stat-num" style="margin-top:34px;">2026</div><div class="stat-label">ГОД</div></div>
         </div>
       </div>
@@ -429,7 +421,7 @@
             </div>
           </div>
           <p class="project-desc">Свой движок на pygame и генератор уровней на C#, который проверяет каждый прыжок на физическую допрыгиваемость.</p>
-          <div class="project-meta"><span class="pill active">в активной разработке</span><span style="font-family:var(--font-mono);font-size:11px;color:var(--text-faint);">v0.8</span></div>
+          <div class="project-meta"><span class="pill active">в активной разработке</span><span style="font-family:var(--font-mono);font-size:11px;color:var(--text-faint);">v0.1</span></div>
         </div>
         <div class="project-card anim" onclick="showView('subway')">
           <div class="project-top">
@@ -441,6 +433,17 @@
           </div>
           <p class="project-desc">Пародия на раннер в духе Subway Surfers на Unity — раннее прототипирование механик бега и уклонения.</p>
           <div class="project-meta"><span class="pill early">ранняя стадия</span><span style="font-family:var(--font-mono);font-size:11px;color:var(--text-faint);">v0.1</span></div>
+        </div>
+        <div class="project-card anim" onclick="showView('industrialist')">
+          <div class="project-top">
+            <div class="project-emoji">⚙</div>
+            <div>
+              <div class="project-name">Industrialist в браузере</div>
+              <div class="project-stack">JAVASCRIPT · THREE.JS</div>
+            </div>
+          </div>
+          <p class="project-desc">3D-игра про строительство заводов: экстракторы, трубы, печи и продажа. Играется прямо в браузере.</p>
+          <div class="project-meta"><span class="pill active">в активной разработке</span></div>
         </div>
       </div>
     </div>
@@ -468,56 +471,6 @@
           <p class="update-desc">Пародийный раннер запущен: базовый бег и уклонение. Черновая версия, полировка впереди.</p>
         </div>
       </div>
-
-      <div class="update-item anim">
-        <div class="update-date"><div class="d">24</div><div class="m">АВГ 26</div></div>
-        <div class="update-icon">▦</div>
-        <div class="update-body">
-          <span class="update-tag">2D Платформер v0.8</span>
-          <div class="update-title">Камера в стиле Mario</div>
-          <p class="update-desc">Первый полноценный режим геймплея со скроллящейся камерой. Дальше — вертикальный подъём и одноэкранные уровни.</p>
-        </div>
-      </div>
-
-      <div class="update-item anim">
-        <div class="update-date"><div class="d">18</div><div class="m">АВГ 26</div></div>
-        <div class="update-icon">▦</div>
-        <div class="update-body">
-          <span class="update-tag">2D Платформер v0.7</span>
-          <div class="update-title">Исправлена детекция земли</div>
-          <p class="update-desc">Определение "стою ли я на земле" починено через 3-пиксельный probe rect. Формат уровней зафиксирован.</p>
-        </div>
-      </div>
-
-      <div class="update-item anim">
-        <div class="update-date"><div class="d">10</div><div class="m">АВГ 26</div></div>
-        <div class="update-icon">▦</div>
-        <div class="update-body">
-          <span class="update-tag">2D Платформер v0.6</span>
-          <div class="update-title">Генератор уровней на C#</div>
-          <p class="update-desc">Именованные паттерны (Лестница, Зигзаг, Холм, Башенка) и проверка допрыгиваемости по кинематике прыжка.</p>
-        </div>
-      </div>
-
-      <div class="update-item anim">
-        <div class="update-date"><div class="d">02</div><div class="m">АВГ 26</div></div>
-        <div class="update-icon">▦</div>
-        <div class="update-body">
-          <span class="update-tag">2D Платформер v0.5</span>
-          <div class="update-title">Меню и настройки</div>
-          <p class="update-desc">Главное меню на pygame и экран настроек: полноэкранный режим и масштаб интерфейса.</p>
-        </div>
-      </div>
-
-      <div class="update-item anim">
-        <div class="update-date"><div class="d">26</div><div class="m">ИЮЛ 26</div></div>
-        <div class="update-icon">▦</div>
-        <div class="update-body">
-          <span class="update-tag">2D Платформер v0.4</span>
-          <div class="update-title">Двойная сетка визуализации</div>
-          <p class="update-desc">Сетки 64×64 и 128×64 с переключением по клавишам F и Q.</p>
-        </div>
-      </div>
     </div>
 
     <!-- ABOUT -->
@@ -531,11 +484,10 @@
       <div class="detail-header anim">
         <div class="about-text">
           <p>Simple Games Studio — соло-студия одного разработчика. Дизайн игровой логики и архитектуры — сам, реализация — сам, с ИИ-инструментами как второй парой рук на этапе кода.</p>
-          <p>Сейчас в работе два проекта: 2D-платформер на Python/pygame с генератором уровней на C#, и ранний прототип раннера в духе Subway Surfers на Unity.</p>
+          <p>Сейчас в работе три проекта: 2D-платформер на Python/pygame с генератором уровней на C#, ранний прототип раннера в духе Subway Surfers на Unity и Industrialist — 3D-игра про строительство заводов прямо в браузере.</p>
           <p>Студия открыта для сотрудничества и обратной связи — если хочешь предложить идею или помочь с проектом, пиши.</p>
         </div>
         <div class="contact-row">
-          <button class="btn-primary">Написать</button>
           <button class="btn-secondary" onclick="showView('updates')">Смотреть обновления</button>
         </div>
       </div>
@@ -561,44 +513,9 @@
       <div class="section-label anim"><span class="bar"></span>История версий</div>
 
       <div class="version-row top anim">
-        <div class="v-tag">v0.8</div>
-        <div class="v-desc">Mario-style скроллящаяся камера — первый полноценный режим геймплея</div>
-        <span class="v-badge">ТЕКУЩАЯ</span>
-        <div class="v-date">24 АВГ 2026</div>
-      </div>
-      <div class="version-row anim">
-        <div class="v-tag">v0.7</div>
-        <div class="v-desc">Исправлена детекция земли (3px probe rect), формат уровней зафиксирован</div>
-        <div class="v-date">18 АВГ 2026</div>
-      </div>
-      <div class="version-row anim">
-        <div class="v-tag">v0.6</div>
-        <div class="v-desc">Генератор уровней на C#: именованные паттерны + проверка допрыгиваемости</div>
-        <div class="v-date">10 АВГ 2026</div>
-      </div>
-      <div class="version-row anim">
-        <div class="v-tag">v0.5</div>
-        <div class="v-desc">Главное меню в pygame и экран настроек с масштабом интерфейса</div>
-        <div class="v-date">02 АВГ 2026</div>
-      </div>
-      <div class="version-row anim">
-        <div class="v-tag">v0.4</div>
-        <div class="v-desc">Двойная сетка визуализации уровня с переключением по F/Q</div>
-        <div class="v-date">26 ИЮЛ 2026</div>
-      </div>
-      <div class="version-row anim">
-        <div class="v-tag">v0.3</div>
-        <div class="v-desc">Коллизия разделена по осям X и Y</div>
-        <div class="v-date">19 ИЮЛ 2026</div>
-      </div>
-      <div class="version-row anim">
-        <div class="v-tag">v0.2</div>
-        <div class="v-desc">Гравитация и прыжок на основе dt</div>
-        <div class="v-date">12 ИЮЛ 2026</div>
-      </div>
-      <div class="version-row anim">
         <div class="v-tag">v0.1</div>
         <div class="v-desc">Первый полноэкранный скелет на pygame</div>
+        <span class="v-badge">ТЕКУЩАЯ</span>
         <div class="v-date">05 ИЮЛ 2026</div>
         <a href="https://github.com/andrew77kovalev-boop/Platformer-v0.1-game/releases/download/v0.1/v0.1.zip"><button class="btn-download">Скачать</button></a>
       </div>
@@ -666,26 +583,11 @@
     });
   }
 
-  function countUp(view){
-    view.querySelectorAll('[data-count]').forEach(el => {
-      const target = parseInt(el.dataset.count, 10);
-      let cur = 0;
-      const step = () => {
-        cur++;
-        el.textContent = cur;
-        if(cur < target) setTimeout(step, 450 / target);
-      };
-      el.textContent = '0';
-      setTimeout(step, 250);
-    });
-  }
-
   function showView(name){
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     const view = document.getElementById('view-' + name);
     view.classList.add('active');
     animateStagger(view);
-    if(name === 'home') countUp(view);
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     const navEl = document.querySelector('.nav-item[data-view="' + name + '"]');
     if(navEl) navEl.classList.add('active');
@@ -780,7 +682,6 @@
 
   const home = document.getElementById('view-home');
   animateStagger(home);
-  countUp(home);
 </script>
 </body>
 </html>
